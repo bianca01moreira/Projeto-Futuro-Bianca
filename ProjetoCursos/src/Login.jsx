@@ -1,6 +1,6 @@
 import { useState } from "react";
 import imagemLogin from './assets/imagens/imagemLogin.png';
-import {Routes, Route, Link} from 'react-router-dom'
+import {Routes, Route, Link, useNavigate} from 'react-router-dom'
 
 let estilo = {
     height:"100vh",
@@ -48,12 +48,14 @@ function Login(){
     const [senha, setSenha] = useState("");
     const [mensagem, setMensagem] = useState("");
 
+    const navigate = useNavigate();
+
     function Enviar  () {
         if(usuario === "" || senha === ""){
-            setMensagem ("você deve preencher todos os dados!")
+            setMensagem ("Você deve preencher todos os dados!")
         }
         else{
-            
+            navigate("/TelaInicio");
         }
     }
     return(

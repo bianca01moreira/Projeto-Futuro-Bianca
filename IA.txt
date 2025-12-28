@@ -1,0 +1,10 @@
+Nesse arquivo vou colocar os prompts que eu pedi para a IA
+
+//NÃO SABIA COMO REDIRECIONAR A TELA
+**function Enviar () {
+    if(usuario === "" || senha === ""){
+        setMensagem ("Você deve preencher todos os dados!") 
+    } else{ 
+        <Link style={estiloLink} to="/telaInicio"></Link> //PORQUE NÃO ESTÁ ACESSANDO ESSA TELA? 
+        } 
+    }
