@@ -1,3 +1,4 @@
+import {Routes, Route, Link, useNavigate} from 'react-router-dom'
 
 let estilo = {
     height:"100vh",
@@ -19,12 +20,13 @@ let estiloAlinhamento = {
     width:"80vw"
 }
 
-function TelaInicio(){
+function TelaInicio(){  
+    const navigate = useNavigate();
     return(
         <div style={estilo}>
             <div style={estiloAlinhamento}>
-                <button style={estiloBotao}>Iniciar Jornada</button>
-                <button style={estiloBotao}>Criar Curso</button>
+                <button style={estiloBotao} onClick={() => navigate("/IniciarJornada")}>Iniciar Jornada</button>
+                <button style={estiloBotao} onClick={() => navigate("/CriarCurso")}>Criar Curso</button>
            </div>
         </div>
     )
