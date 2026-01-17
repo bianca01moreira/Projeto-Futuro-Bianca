@@ -8,3 +8,52 @@ Nesse arquivo vou colocar os prompts que eu pedi para a IA
         <Link style={estiloLink} to="/telaInicio"></Link> //PORQUE NÃO ESTÁ ACESSANDO ESSA TELA? 
         } 
     }
+
+//Tive um pequeno problema de responsividade, então pedi ajuda para o chat. Segue abaixo o que enviei para ele:
+por que minha tela desconfigura quando deixo ela menor? 
+import {Routes, Route, Link, useNavigate} from 'react-router-dom' 
+import '../icones.js' //import { FontAwesomeIcon } from '@fortawesome/react-fontawesome' 
+import iniciarCurso from '../assets/imagens/iniciarCurso.png'; 
+import criarCurso from '../assets/imagens/criarCurso.png'; 
+
+let estilo = { height:"100vh", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "#0055A0", } 
+let estiloBotao = { border: "none", backgroundColor: "#0055A0", } 
+let estiloAlinhamento = { display: "flex", justifyContent: "space-evenly", width:"80vw" }
+function TelaInicio(){ 
+    const navigate = useNavigate(); 
+    return( 
+        <div style={estilo}> 
+            <div style={estiloAlinhamento}> 
+                <button style={estiloBotao} onClick={() => navigate("/IniciarJornada")}> 
+                    <img src={iniciarCurso} style={{ width: 550, height: 450 }}/> 
+                </button> <button style={estiloBotao} onClick={() => navigate("/CriarCurso")}> 
+                    <img src={criarCurso} style={{ width: 550, height: 450 }}/>
+                </button> 
+            </div> 
+        </div>
+    ) 
+} export default TelaInicio;
+
+//RESPOSTA FINAL QUE ELE ME ENVIOU:
+
+✅ Código final corrigido (resumido)
+<button style={estiloBotao} onClick={() => navigate("/IniciarJornada")}>
+  <img
+    src={iniciarCurso}
+    style={{
+      width: "100%",
+      maxWidth: "550px",
+      height: "auto"
+    }}
+  />
+</button>
+E:
+let estiloAlinhamento = {
+    display: "flex",
+    justifyContent: "center",
+    gap: "40px",
+    width: "100%",
+    flexWrap: "wrap"
+}
+
+

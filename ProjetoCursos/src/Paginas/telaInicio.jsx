@@ -1,32 +1,53 @@
 import {Routes, Route, Link, useNavigate} from 'react-router-dom'
+import '../icones.js'
+//import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import iniciarCurso from '../assets/imagens/iniciarCurso.png';
+import criarCurso from '../assets/imagens/criarCurso.png';
 
 let estilo = {
-    height:"100vh",
+    minHeight: "100vh",
+    display:"100vh",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#0055A0",
 }
 let estiloBotao = {
-    backgroundColor:"#FFFFFF",
-    width:"400px",
-    height:"400px",
     border: "none",
-    borderRadius:"10px"
+    backgroundColor: "#0055A0",
 }
 let estiloAlinhamento = {
     display: "flex",
-    justifyContent: "space-evenly",
-    width:"80vw"
+    justifyContent: "center",
+    gap: "40px",
+    width: "100%",
+    flexWrap: "wrap"
 }
-
 function TelaInicio(){  
     const navigate = useNavigate();
     return(
         <div style={estilo}>
             <div style={estiloAlinhamento}>
-                <button style={estiloBotao} onClick={() => navigate("/IniciarJornada")}>Iniciar Jornada</button>
-                <button style={estiloBotao} onClick={() => navigate("/CriarCurso")}>Criar Curso</button>
+                <button style={estiloBotao} onClick={() => navigate("/IniciarJornada")}>
+                    <img 
+                        src={iniciarCurso} 
+                        style={{
+                            width: "100%", 
+                            maxWidth: "550px", 
+                            height: "auto" 
+                        }}
+                    />  
+                </button>
+                <button style={estiloBotao} onClick={() => navigate("/CriarCurso")}>
+                    <img 
+                        src={criarCurso} 
+                        style={{
+                            width: "100%", 
+                            maxWidth: "550px", 
+                            height: "auto" 
+                        }}
+                    />
+                </button>
            </div>
         </div>
     )
