@@ -5,6 +5,7 @@ import SolicitarAcesso from "./Paginas/SolicitarAcesso"
 import TelaInicio from "./Paginas/telaInicio"
 import CriarCurso from "./Paginas/Administracao/CriarCurso"
 import IniciarJornada from "./Paginas/DarCurso/iniciarJornada"
+
 function App() {
 
   return (
