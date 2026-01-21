@@ -1,4 +1,5 @@
 import { useState } from "react";
+import imagemLogin from '../assets/imagens/imagemLogin.png';
 
 let estilo = {
     paddingTop: "30px",
@@ -14,10 +15,13 @@ let estilo = {
     borderRadius:"10px"
 }
 let estiloFundo = {
-    height:"100vh",
+    minHeight:"100vh",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    backgroundImage: `radial-gradient(circle, transparent 40%, rgba(0, 0, 0, 0.8) 100%),
+    url(${imagemLogin})`,
+    backgroundSize: "cover",
 }
 
 let estiloInput = {
@@ -26,12 +30,14 @@ let estiloInput = {
     height:"25px",
     width:"90%",
     padding:"5px",
+    marginTop:"3px",
 }
 let estiloButton = {
     border: "none",
     borderRadius: "5px",
     backgroundColor:"#F7DB12",
     padding: "10px",
+    width:"280px"
 }
 function SolicitarAcesso(){
     const [nome, setNome] = useState("");

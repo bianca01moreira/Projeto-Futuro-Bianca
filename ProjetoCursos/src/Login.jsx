@@ -10,7 +10,6 @@ let estilo = {
     backgroundImage: `radial-gradient(circle, transparent 40%, rgba(0, 0, 0, 0.8) 100%),
     url(${imagemLogin})`,
     backgroundSize: "cover",
-
 }
 let estiloLogin = {
     paddingTop: "30px",
@@ -38,6 +37,7 @@ let estiloButton = {
     borderRadius: "5px",
     backgroundColor:"#F7DB12",
     padding: "10px",
+    width: "280px"
 }
 let estiloLink = {
     color:"#F7DB12",
