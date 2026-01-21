@@ -3,7 +3,7 @@ import imagemLogin from './assets/imagens/imagemLogin.png';
 import {Routes, Route, Link, useNavigate} from 'react-router-dom'
 
 let estilo = {
-    height:"100vh",
+    minHeight:"100vh",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
