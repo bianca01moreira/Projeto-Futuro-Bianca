@@ -7,9 +7,12 @@ import CriarCurso from "./Paginas/Administracao/CriarCurso"
 import IniciarJornada from "./Paginas/DarCurso/iniciarJornada"
 
 function App() {
-
+  let estiloFundo = {
+    minHeight:"100vh",
+    backgroundColor: "#F4F4F4",
+  }
   return (
-    <>
+    <div style={estiloFundo}>
       <Routes>
         <Route path="/" element={<Login/>}/>
         <Route path="/SolicitarAcesso" element={<SolicitarAcesso/>}/>
@@ -17,7 +20,7 @@ function App() {
         <Route path="/CriarCurso" element={<CriarCurso/>} />
         <Route path="IniciarJornada" element={<IniciarJornada/>}/>
       </Routes>
-    </>
+    </div>
   )
 }
 
