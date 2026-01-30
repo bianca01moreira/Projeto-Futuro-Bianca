@@ -6,7 +6,6 @@ import criarCurso from '../assets/imagens/criarCurso.png';
 
 let estilo = {
     minHeight: "100vh",
-    display:"100vh",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
