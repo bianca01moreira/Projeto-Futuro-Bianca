@@ -4,6 +4,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import "./CriarCurso.css";
 import './Modal.css';
 
+//para usar o react-quill-new
+import EditorQuill from "../../componentes/EditorQuill";
+
+
 function CriarCurso(){
 
     // hooks
@@ -16,6 +20,9 @@ function CriarCurso(){
 
     const [moduloCurso, setModuloCurso] = useState("")
     const [descricao, setDescricao] = useState("")
+
+    //HOOK PARA O REACT QUILL
+    const [conteudoCurso, setConteudoCurso] = useState("");
 
     function salvar() {
         if (!moduloCurso || !descricao) {
@@ -110,12 +117,49 @@ function CriarCurso(){
                 <FontAwesomeIcon icon="fa-solid fa-truck-monster" size="2xl" style={{color: "#f7db12"}}/>
             </button>
         </Menu>
+        <div style={{ display: "flex", minHeight: "calc(100vh - 150px)" }}>
+            <div style={estiloMenuLateral}>
+                {modulos.map((modulo, index) => (
+                    <div 
+                        key={index}
+                        style={{
+                            color: "#f7db12",
+                            width: "90%",
+                            borderBottom: "1px solid #f7db12",
+                            paddingBottom: "5px",
+                            wordBreak: "break-word",
+                            overflowWrap: "break-word",
+                            whiteSpace: "normal"
+                        }}
+                    >
+                        <strong>{modulo.nome}</strong>
+                        <p style={{ fontSize: "12px" }}>{modulo.descricao}</p>
+                    </div>
+                ))}
+                <button style={estiloBotao} type="button" onClick={abrirModal}>
+                    <FontAwesomeIcon icon="fa-solid fa-circle-plus" size="3x" style={{color: "#f7db12"}} />
+                </button>
+            </div>
+            <div
+                style={{
+                    flex: 1,
+                    backgroundColor: "#fff",
+                    padding: "10px",
+                    display: "flex",       
+                    flexDirection: "column" 
+                }}
+            >
+                <EditorQuill
+                    value={conteudoCurso}
+                    onChange={setConteudoCurso}
+                />
+            </div>
 
+        </div>
         {modalIsOpen && (
             <div className="modal-backdrop">
                 <div className="modal-content">
                     <h2>Cadastro do módulo/aula</h2>
-
                     <form className="form-modal">
                         <label>
                             Nome do módulo
@@ -125,7 +169,6 @@ function CriarCurso(){
                                 onChange={(e)=> setModuloCurso(e.target.value)}
                             />
                         </label>
-
                         <label>
                             Descrição do curso
                             <textarea
@@ -137,37 +180,11 @@ function CriarCurso(){
                             />
                         </label>
                     </form>
-
                     <button onClick={fecharModal}>Fechar</button>
                     <button onClick={salvar}>Salvar</button>
                 </div>
             </div>
-        )}
-
-        <div style={estiloMenuLateral}>
-
-            {modulos.map((modulo, index) => (
-                <div 
-                    key={index}
-                    style={{
-                        color: "#f7db12",
-                        width: "90%",
-                        borderBottom: "1px solid #f7db12",
-                        paddingBottom: "5px",
-                        wordBreak: "break-word",
-                        overflowWrap: "break-word",
-                        whiteSpace: "normal"
-                    }}
-                >
-                    <strong>{modulo.nome}</strong>
-                    <p style={{ fontSize: "12px" }}>{modulo.descricao}</p>
-                </div>
-            ))}
-
-            <button style={estiloBotao} type="button" onClick={abrirModal}>
-                <FontAwesomeIcon icon="fa-solid fa-circle-plus" size="3x" style={{color: "#f7db12"}} />
-            </button>
-        </div>
+        )}  
     </div>
     )
 }

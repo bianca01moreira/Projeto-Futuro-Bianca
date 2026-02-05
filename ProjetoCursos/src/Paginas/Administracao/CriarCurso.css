@@ -1,4 +1,4 @@
 .inputCurso::placeholder {
-  color: #f7db12; /* amarelo, por exemplo */
-  opacity: 1; /* evita ficar transparente */
+  color: #f7db12;
+  opacity: 1;
 }
