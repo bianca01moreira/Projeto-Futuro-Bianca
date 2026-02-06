@@ -56,4 +56,6 @@ let estiloAlinhamento = {
     flexWrap: "wrap"
 }
 
+//Não sabia como colocar o React-quill-new, então pedi ajuda para o chatGpt e o Gemini.
+"Me ajude a colocar o react-quill-new nesse projeto".
 
