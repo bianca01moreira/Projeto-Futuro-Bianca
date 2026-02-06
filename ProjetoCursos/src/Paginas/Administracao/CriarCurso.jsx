@@ -14,12 +14,23 @@ function CriarCurso(){
     const [nomeCurso, setNomeCurso] = useState("")
     const [nivelCurso, setNivelCurso] = useState("")
 
+    //hooks para o modulo do curso
     const [modulos, setModulos] = useState([])
-
     const [modalIsOpen, setModalIsOpen] = useState(false)
-
     const [moduloCurso, setModuloCurso] = useState("")
     const [descricao, setDescricao] = useState("")
+    const [moduloEmEdicao, setModuloEmEdicao] = useState(null)
+    //Quando o backend for criado isso será desnecessário
+    const[idModulo, setIdModulo] = useState(1)
+
+    //Hook PARA CADASTRO/MODAL DAS MAQUINAS
+    const [modalMaquinaIsOpen, setModalMaquinaIsOpen] = useState(false)
+    const [nomeMaquina, setNomeMaquina] = useState("")
+    const [tipoMaquina, setTipoMaquina] = useState("indefinido")
+    const [modeloMaquina, setModeloMaquina] = useState("")
+    
+    //Quando o backend for criado isso será desnecessário
+     const[idMaquina, setIdMaquina] = useState(1)
 
     //HOOK PARA O REACT QUILL
     const [conteudoCurso, setConteudoCurso] = useState("");
@@ -30,16 +41,26 @@ function CriarCurso(){
             return
         }
 
-        const novoModulo = {
-            nome: moduloCurso,
-            descricao: descricao,
+        if(moduloEmEdicao){
+            //Função para editar modulos existentes
+            setModulos(modulos.map(mod =>
+                mod.id === moduloEmEdicao.id
+                ? {...mod, nome: moduloCurso, descricao: descricao}
+                : mod
+            ))
+            setModuloEmEdicao(null)
+        } else {
+            const novoModulo = {
+                id: idModulo,
+                nome: moduloCurso,
+                descricao: descricao,
+            }
+            setIdModulo(idModulo+1)
+            setModulos([...modulos, novoModulo])
         }
-
-        setModulos([...modulos, novoModulo])
 
         setModuloCurso("")
         setDescricao("")
-
         fecharModal()
     }
 
@@ -49,6 +70,28 @@ function CriarCurso(){
 
     function fecharModal() {
         setModalIsOpen(false)
+        setModuloEmEdicao(null)
+        setModuloCurso("")
+        setDescricao("")
+    }
+    function editarModulo(modulo){
+        setModuloEmEdicao(modulo)
+        setModuloCurso(modulo.nome)
+        setDescricao(modulo.descricao)
+        abrirModal()
+    }
+    function deletarModulo(id){
+        setModulos(modulos.filter(modulo => modulo.id !== id))
+    }
+
+    function abrirModalMaquina() {
+        setModalMaquinaIsOpen(true)
+    }
+
+    function fecharModalMaquina() {
+        setModalMaquinaIsOpen(false)
+        setNomeMaquina("")
+        setTipoMaquina("")
     }
 
     let estiloMenuLateral = {
@@ -113,15 +156,15 @@ function CriarCurso(){
                 </select>
             </span>
 
-            <button style={estiloBotao}>
+            <button style={estiloBotao} onClick={abrirModalMaquina}>
                 <FontAwesomeIcon icon="fa-solid fa-truck-monster" size="2xl" style={{color: "#f7db12"}}/>
             </button>
         </Menu>
         <div style={{ display: "flex", minHeight: "calc(100vh - 150px)" }}>
             <div style={estiloMenuLateral}>
-                {modulos.map((modulo, index) => (
+                {modulos.map((modulo) => (
                     <div 
-                        key={index}
+                        key={modulo.id}
                         style={{
                             color: "#f7db12",
                             width: "90%",
@@ -129,11 +172,30 @@ function CriarCurso(){
                             paddingBottom: "5px",
                             wordBreak: "break-word",
                             overflowWrap: "break-word",
-                            whiteSpace: "normal"
+                            whiteSpace: "normal",
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignContent: "flex-start",
+                            gap:"10px"
                         }}
                     >
-                        <strong>{modulo.nome}</strong>
-                        <p style={{ fontSize: "12px" }}>{modulo.descricao}</p>
+                        <div style={{flex:1}}>
+                            <strong>{modulo.nome}</strong>
+                            <p style={{ fontSize: "12px", margin:"5px 0"}}>{modulo.descricao}</p>
+                        </div>
+                        <div style={{display:"flex", gap:"5px"}}>
+                            <button style={{background:"none", border:"none", cursor:"pointer"}}
+                                onClick={() => editarModulo(modulo)}
+                            >
+                                <FontAwesomeIcon icon="fa-solid fa-pencil" style={{color: "#f7db12",}} />
+                            </button>
+                            <button
+                                onClick={()=> deletarModulo(modulo.id)}
+                                style={{background:"none", border:"none", cursor:"pointer"}}
+                            >
+                                <FontAwesomeIcon icon="fa-solid fa-trash" style={{color: "#f7db12",}} />
+                            </button>
+                        </div>
                     </div>
                 ))}
                 <button style={estiloBotao} type="button" onClick={abrirModal}>
@@ -159,7 +221,7 @@ function CriarCurso(){
         {modalIsOpen && (
             <div className="modal-backdrop">
                 <div className="modal-content">
-                    <h2>Cadastro do módulo/aula</h2>
+                    <h2>{moduloEmEdicao ? "Editar módulo/aula" : "Cadastro do módulo/aula"}</h2>
                     <form className="form-modal">
                         <label>
                             Nome do módulo
@@ -181,7 +243,7 @@ function CriarCurso(){
                         </label>
                     </form>
                     <button onClick={fecharModal}>Fechar</button>
-                    <button onClick={salvar}>Salvar</button>
+                    <button onClick={salvar}>{moduloEmEdicao ? "Atualizar" : "Salvar"}</button>
                 </div>
             </div>
         )}  
