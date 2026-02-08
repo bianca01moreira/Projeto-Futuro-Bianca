@@ -407,7 +407,7 @@ function CriarCurso(){
                                     <select
                                         value={linhaEquipamento}
                                         onChange={(e) => setLinhaEquipamento(e.target.value)}
-                                        style={{padding:"6px", fontSize:"16px"}}
+                                        style={{padding:"6px", fontSize:"16px", backgroundColor:"#f7db12"}}
                                     >
                                         <option value="">Selecione a linha</option>
                                         <option value="vibroacabadora">Vibroacabadora</option>
