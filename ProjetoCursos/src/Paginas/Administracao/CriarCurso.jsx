@@ -175,7 +175,14 @@ function CriarCurso(){
             <span>
                 <input
                     className="inputCurso" 
-                    style={estiloInput}
+                    style={{
+                        border: "none",
+                        borderBottom:"2px solid #f7db12",
+                        backgroundColor:"#0055A0",
+                        color:"#f7db12",
+                        padding:"5px",
+                        fontSize: "20px",
+                    }}
                     type="text"
                     value={nomeCurso}
                     placeholder="Insira o nome do curso"
@@ -261,7 +268,7 @@ function CriarCurso(){
         {modalIsOpen && (
             <div className="modal-backdrop">
                 <div className="modal-content">
-                    <h2>{moduloEmEdicao ? "Editar módulo/aula" : "Cadastro do módulo/aula"}</h2>
+                    <h2>{moduloEmEdicao ? "Editar módulo" : "Cadastro do módulo"}</h2>
                     <form className="form-modal">
                         <label>
                             Nome do módulo
@@ -272,12 +279,12 @@ function CriarCurso(){
                             />
                         </label>
                         <label>
-                            Descrição do curso
+                            Descrição do módulo
                             <textarea
                                 className="textarea-modal"
                                 value={descricao}
                                 onChange={(e) => setDescricao(e.target.value)}
-                                placeholder="Descreva o curso"
+                                placeholder="Descreva o módulo"
                                 rows={4}
                             />
                         </label>
