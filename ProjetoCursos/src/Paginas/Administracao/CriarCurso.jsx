@@ -107,7 +107,6 @@ function CriarCurso(){
         setLinhaEquipamento("")
         setModeloEquipamento("")
         setMaquinaEmEdicao(null)
-        setMaquinasSelecionadas([])
     }
     function salvarMaquina(){
         if(maquinaEmEdicao){
@@ -132,6 +131,16 @@ function CriarCurso(){
         setLinhaEquipamento("")
         setAbaMaquina("listar")
         fecharModalMaquina()
+    }
+
+    //Função salvar curso
+    function salvarCurso(nomeCurso, nivelCurso, maquinasSelecionadas){
+        if(nomeCurso=="" || nivelCurso == "" || maquinasSelecionadas.length === 0 || modulos.length===0){
+            alert("Ante de salvar você precisa adicionar nível, nome, máquinas e os módulos desse curso.")
+        }
+        else{
+            alert("curso salvo")
+        }
     }
 
     let estiloMenuLateral = {
@@ -262,8 +271,19 @@ function CriarCurso(){
                     value={conteudoCurso}
                     onChange={setConteudoCurso}
                 />
+                <button 
+                    style={{
+                        border:"none",
+                        backgroundColor:"#fff",
+                        padding:"5px"
+                    }}
+                    type="button"
+                    onClick={() => salvarCurso(nomeCurso, nivelCurso, maquinasSelecionadas)}
+                >
+                    <FontAwesomeIcon icon="fa-solid fa-circle-check" size="4x" style={{color: "#0055a0ff",}} />
+                </button>
             </div>
-
+          
         </div>
         {modalIsOpen && (
             <div className="modal-backdrop">
@@ -407,7 +427,7 @@ function CriarCurso(){
                                     <select
                                         value={linhaEquipamento}
                                         onChange={(e) => setLinhaEquipamento(e.target.value)}
-                                        style={{padding:"6px", fontSize:"16px", backgroundColor:"#f7db12"}}
+                                        style={{padding:"6px", fontSize:"16px", backgroundColor:"#f7db12c"}}
                                     >
                                         <option value="">Selecione a linha</option>
                                         <option value="vibroacabadora">Vibroacabadora</option>
