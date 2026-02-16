@@ -1,5 +1,5 @@
 import Menu from "../../Menu.jsx"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import "./CriarCurso.css";
 import './Modal.css';
@@ -136,10 +136,32 @@ function CriarCurso(){
     //Função salvar curso
     function salvarCurso(nomeCurso, nivelCurso, maquinasSelecionadas){
         if(nomeCurso=="" || nivelCurso == "" || maquinasSelecionadas.length === 0 || modulos.length===0){
-            alert("Ante de salvar você precisa adicionar nível, nome, máquinas e os módulos desse curso.")
+            alert("Antes de salvar você precisa adicionar nível, nome, máquinas e os módulos desse curso.")
         }
         else{
-            alert("curso salvo")
+            const novoCurso = {
+                id: Date.now(),
+                nomeCurso: nomeCurso,
+                nivelCurso: nivelCurso,
+                modulos: modulos,
+                maquinasSelecionadas: maquinasSelecionadas,
+                conteudoCurso: conteudoCurso,
+                dataCriacao: new Date().toLocaleDateString('pt-br')
+            }
+            const cursosSalvos = JSON.parse(localStorage.getItem('cursos')) || []
+
+            cursosSalvos.push(novoCurso)
+
+            localStorage.setItem('cursos', JSON.stringify(cursosSalvos))
+
+            alert("Curso salvo com sucesso!")
+
+            setNomeCurso("")
+            setNivelCurso("")
+            setModulos([])
+            setMaquinasSelecionadas([])
+            setConteudoCurso("")
+            setMaquinas([])
         }
     }
 
