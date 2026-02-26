@@ -1,62 +1,182 @@
+import React, {useState, useEffect} from 'react';
+import { useNavigate } from 'react-router-dom';
 import logo from '../../assets/imagens/logo.png';
-import { useState,useEffect, use } from 'react';
+import Menu from '../../Menu.jsx';
+
 function IniciarJornada(){
+    const [cursos, setCursos] = useState([]);
+    const [selected, setSelected] = useState (null);
+    const [loading, setLoading] = useState(true);
+    const [mostrarApenasDisponiveis, setMostrarApenasDisponiveis] = useState(true);
+    const navigate = useNavigate();
 
-    const [cursos, setCursos] = useState([])
-
-    useEffect(() =>{
-        const cursosSalvos = JSON.parse(localStorage.getItem('cursos')) || []
-        setCursos(cursosSalvos)
-    }, [])
-
-    let estiloFundo = {
-        minHeight:"100vh",
-        backgroundColor: "#F4F4F4",
+    useEffect(() => {
+        const dados = JSON.parse(localStorage.getItem('cursos') || '[]');
+        setCursos(dados);
+        setLoading(false);
+    }, []);
+    function refreshFromStorage(){
+        const dados = JSON.parse(localStorage.getItem('cursos') || '[]');
+        setCursos(dados);
     }
-    let estiloHeader = {
-        minHeight:"90px",  
-        backgroundColor: "#0055A0",
+    function inciarCurso(curso){
+         // abrir a tela de visualização (mesma rota de CriarCurso, em modo readOnly)
+         navigate('/CriarCurso', { state: { cursoId: curso.id, readOnly: true } });
     }
-   
+    function excluirCurso(id){
+        if(!window.confirm('Confirmar exclusão do curso?'))
+            return;
+        const novos = cursos.filter((c) => c.id !== id);
+        localStorage.setItem('cursos', JSON.stringify(novos));
+        setCursos(novos);
+        if(selected && selected.id === id) setSelected(null);
+    }
+    function editar(id){
+        navigate('/CriarCurso', {state: {cursoId: id }});
+    }
+    
+    const cursosFiltrados = mostrarApenasDisponiveis ? cursos.filter((c) => c.disponivel) : cursos;
+
+    if(loading)
+        return <div>Carregando...</div>;
+
     return (
-    <div style={estiloFundo}>
-        <div style={estiloHeader}>
-            <img 
-                src={logo} 
-                style={{
-                    maxWidth: "180px", 
-                    maxHeight:"150px", 
-                }}
-            />
+    <div>
+        <div>
+            <Menu></Menu>
         </div>
-        <div style={{ padding: "20px" }}>
-            <h1>Cursos Disponíveis</h1>
-            {cursos.length === 0 ? (
-                <p>Nenhum curso disponível</p>
+        <div style={{ padding: 20 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <h1>Cursos</h1>
+                <label>
+                  <input
+                  type="checkbox"
+                  checked={mostrarApenasDisponiveis}
+                  onChange={(e) => setMostrarApenasDisponiveis(e.target.checked)}
+                  style={{ marginRight: 6 }}
+                  />
+                  Mostrar apenas disponíveis
+                </label>
+            </div>
+
+            {cursosFiltrados.length === 0 ? (
+            <p>Nenhum curso disponível</p>
             ) : (
-                cursos.map((curso) => (
-                    <div 
-                        key={curso.id}
-                        style={{
-                            backgroundColor: "#fff",
-                            padding: "20px",
-                            marginBottom: "15px",
-                            borderRadius: "8px",
-                            boxShadow: "0 2px 8px rgba(0,0,0,0.1)"
-                        }}
+            cursosFiltrados.map((curso) => (
+            <div
+                key={curso.id}
+                style={{
+                    backgroundColor: '#fff',
+                    padding: 20,
+                    marginBottom: 15,
+                    borderRadius: 8,
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                }}
+                >
+                <div>
+                    <h2 style={{ margin: 0 }}>{curso.nomeCurso}</h2>
+                    <p style={{ margin: '6px 0' }}>
+                    <strong>Nível:</strong> {curso.nivelCurso} • <strong>Módulos:</strong>{' '}
+                    {Array.isArray(curso.modulos) ? curso.modulos.length : 0}
+                    </p>
+                    <p style={{ margin: '6px 0' }}>
+                    <strong>Criado em:</strong> {curso.dataCriacao} • <strong>Disponível:</strong>{' '}
+                    {curso.disponivel ? 'Sim' : 'Não'}
+                    </p>
+                </div>
+
+                <div style={{ display: 'flex', gap: 8 }}>
+                    <button
+                      onClick={() => inciarCurso(curso)}
+                    style={{
+                        backgroundColor: '#0b7a4d',
+                        color: '#fff',
+                        padding: '8px 12px',
+                        border: 'none',
+                        borderRadius: 6,
+                        cursor: 'pointer',
+                    }}
                     >
-                        <h2>{curso.nomeCurso}</h2>
-                        <p><strong>Nível:</strong> {curso.nivelCurso}</p>
-                        <p><strong>Módulos:</strong> {curso.modulos.length}</p>
-                        <p><strong>Criado em:</strong> {curso.dataCriacao}</p>
-                        <button style={{backgroundColor: "#0055A0", color: "#f7db12", padding: "10px 20px", border: "none", borderRadius: "5px", cursor: "pointer"}}>
-                            Iniciar Curso
-                        </button>
-                    </div>
-                ))
-            )}
+                    Iniciar
+                    </button>
+                    <button
+                      onClick={() => editar(curso.id)}
+                    style={{
+                        backgroundColor: '#0055A0',
+                        color: '#f7db12',
+                        padding: '8px 12px',
+                        border: 'none',
+                        borderRadius: 6,
+                        cursor: 'pointer',
+                    }}
+                    >
+                    Editar
+                    </button>
+                    <button
+                      onClick={() => excluirCurso(curso.id)}
+                    style={{
+                        backgroundColor: '#c42b2b',
+                        color: '#fff',
+                        padding: '8px 12px',
+                        border: 'none',
+                        borderRadius: 6,
+                        cursor: 'pointer',
+                    }}
+                    >
+                    Excluir
+                    </button>
+                </div>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* Modal de visualização do curso */}
+      {selected && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            backgroundColor: 'rgba(0,0,0,0.4)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 999,
+          }}
+          onClick={() => setSelected(null)}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              width: 800,
+              maxWidth: '95%',
+              maxHeight: '90%',
+              overflow: 'auto',
+              backgroundColor: '#fff',
+              padding: 20,
+              borderRadius: 8,
+            }}
+          >
+            <h2 style={{ marginTop: 0 }}>{selected.nomeCurso}</h2>
+            <div
+              style={{ lineHeight: 1.6 }}
+              dangerouslySetInnerHTML={{ __html: selected.conteudoCurso || '<p>Sem conteúdo</p>' }}
+            />
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, marginTop: 12 }}>
+              <button
+                onClick={() => setSelected(null)}
+                style={{ padding: '8px 12px', borderRadius: 6, border: 'none', cursor: 'pointer' }}
+              >
+                Fechar
+              </button>
+            </div>
+          </div>
         </div>
+      )}
     </div>
-    )
+  );
 }
 export default IniciarJornada;

@@ -1,5 +1,6 @@
 import Menu from "../../Menu.jsx"
 import { useState, useEffect } from "react"
+import { useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import "./CriarCurso.css";
 import './Modal.css';
@@ -33,6 +34,30 @@ function CriarCurso(){
 
     //HOOK PARA O REACT QUILL
     const [conteudoCurso, setConteudoCurso] = useState("");
+    const [disponivel, setDisponivel] = useState(true);
+
+    const location = useLocation();
+    const navigate = useNavigate();
+    const editandoId = location.state?.cursoId || null;
+    const readOnly = location.state?.readOnly || false;
+
+    useEffect(() =>{
+        if (!editandoId)
+            return;
+        const cursosSalvos = JSON.parse(localStorage.getItem('cursos') || '[]');
+        const curso = cursosSalvos.find(c => String(c.id) === String(editandoId));
+        if (curso){
+            setNomeCurso(curso.nomeCurso || '');
+            setNivelCurso(curso.nivelCurso || '');
+            setModulos(curso.modulos || []);
+            setMaquinasSelecionadas(curso.maquinasSelecionadas || []);
+            setConteudoCurso(curso.conteudoCurso || '');
+            const maiorIdModulo = (curso.modulos || []).reduce((m, md) => Math.max(m, md.id || 0), 0);
+            setIdModulo(maiorIdModulo + 1);
+            setDisponivel(curso.disponivel ?? true);
+        }
+    }, [editandoId]);
+
 
     //função para salvar os módulos do curso
     function salvar() {
@@ -137,32 +162,40 @@ function CriarCurso(){
     function salvarCurso(nomeCurso, nivelCurso, maquinasSelecionadas){
         if(nomeCurso=="" || nivelCurso == "" || maquinasSelecionadas.length === 0 || modulos.length===0){
             alert("Antes de salvar você precisa adicionar nível, nome, máquinas e os módulos desse curso.")
+            return;
         }
-        else{
-            const novoCurso = {
-                id: Date.now(),
-                nomeCurso: nomeCurso,
-                nivelCurso: nivelCurso,
-                modulos: modulos,
-                maquinasSelecionadas: maquinasSelecionadas,
-                conteudoCurso: conteudoCurso,
-                dataCriacao: new Date().toLocaleDateString('pt-br')
-            }
-            const cursosSalvos = JSON.parse(localStorage.getItem('cursos')) || []
-
-            cursosSalvos.push(novoCurso)
-
-            localStorage.setItem('cursos', JSON.stringify(cursosSalvos))
-
-            alert("Curso salvo com sucesso!")
-
-            setNomeCurso("")
-            setNivelCurso("")
-            setModulos([])
-            setMaquinasSelecionadas([])
-            setConteudoCurso("")
-            setMaquinas([])
+        const cursoObj = {
+            id:editandoId || Date.now(),
+            nomeCurso: nomeCurso,
+            nivelCurso: nivelCurso,
+            modulos:modulos,
+            maquinasSelecionadas: maquinasSelecionadas,
+            disponivel: disponivel,
+            conteudoCurso: conteudoCurso,
+            dataCriacao: new Date().toLocaleDateString('pt-br')
         }
+        const cursosSalvos = JSON.parse(localStorage.getItem('cursos') || '[]');
+        if (editandoId){
+            const idx = cursosSalvos.findIndex(c => String(c.id) === String(editandoId));
+            if (idx > -1) 
+                cursosSalvos[idx] = cursoObj;
+            else cursosSalvos.push(cursoObj);
+            alert ("Curso atualizado com sucesso!");
+        } else{
+            cursosSalvos.push(cursoObj);
+            alert("Curso salvo com sucesso!");
+        }
+        
+        localStorage.setItem('cursos', JSON.stringify(cursosSalvos))
+            
+        setNomeCurso("");
+        setNivelCurso("");
+        setModulos([]);
+        setMaquinasSelecionadas([]);
+        setConteudoCurso("");
+        setDisponivel(true);
+        setMaquinas([]);
+        navigate('/IniciarJornada');    
     }
 
     let estiloMenuLateral = {
@@ -218,7 +251,24 @@ function CriarCurso(){
                     value={nomeCurso}
                     placeholder="Insira o nome do curso"
                     onChange={(e)=> setNomeCurso(e.target.value)}
+                    disabled={readOnly}
                 />
+            </span>
+
+            <span>
+                {!readOnly ? (
+                    <label style={{ color: '#f7db12' }}>
+                        <input
+                            type="checkbox"
+                            checked={disponivel}
+                            onChange={(e) => setDisponivel(e.target.checked)}
+                            style={{ marginRight: 6 }}
+                        />
+                        Disponível
+                    </label>
+                ) : (
+                    <p style={{ color: '#f7db12', margin: 0 }}>Disponível: {disponivel ? 'Sim' : 'Não'}</p>
+                )}
             </span>
 
             <span>
@@ -226,6 +276,7 @@ function CriarCurso(){
                     style={estiloSelect}
                     value={nivelCurso}
                     onChange={(e) => setNivelCurso(e.target.value)}
+                    disabled={readOnly}
                 >
                     <option value="">Selecione o nível do curso</option>
                     <option value="basico">Básico</option>
@@ -234,9 +285,11 @@ function CriarCurso(){
                 </select>
             </span>
 
-            <button style={estiloBotao} onClick={abrirModalMaquina}>
-                <FontAwesomeIcon icon="fa-solid fa-truck-monster" size="2xl" style={{color: "#f7db12"}}/>
-            </button>
+            {!readOnly && (
+                <button style={estiloBotao} onClick={abrirModalMaquina}>
+                    <FontAwesomeIcon icon="fa-solid fa-truck-monster" size="2xl" style={{color: "#f7db12"}}/>
+                </button>
+            )}
         </Menu>
         <div style={{ display: "flex", minHeight: "calc(100vh - 150px)" }}>
             <div style={estiloMenuLateral}>
@@ -262,23 +315,29 @@ function CriarCurso(){
                             <p style={{ fontSize: "12px", margin:"5px 0"}}>{modulo.descricao}</p>
                         </div>
                         <div style={{display:"flex", gap:"5px"}}>
-                            <button style={{background:"none", border:"none", cursor:"pointer"}}
-                                onClick={() => editarModulo(modulo)}
-                            >
-                                <FontAwesomeIcon icon="fa-solid fa-pencil" style={{color: "#f7db12",}} />
-                            </button>
-                            <button
-                                onClick={()=> deletarModulo(modulo.id)}
-                                style={{background:"none", border:"none", cursor:"pointer"}}
-                            >
-                                <FontAwesomeIcon icon="fa-solid fa-trash" style={{color: "#f7db12",}} />
-                            </button>
+                            {!readOnly && (
+                                <>
+                                    <button style={{background:"none", border:"none", cursor:"pointer"}}
+                                        onClick={() => editarModulo(modulo)}
+                                    >
+                                        <FontAwesomeIcon icon="fa-solid fa-pencil" style={{color: "#f7db12",}} />
+                                    </button>
+                                    <button
+                                        onClick={()=> deletarModulo(modulo.id)}
+                                        style={{background:"none", border:"none", cursor:"pointer"}}
+                                    >
+                                        <FontAwesomeIcon icon="fa-solid fa-trash" style={{color: "#f7db12",}} />
+                                    </button>
+                                </>
+                            )}
                         </div>
                     </div>
                 ))}
-                <button style={estiloBotao} type="button" onClick={abrirModal}>
-                    <FontAwesomeIcon icon="fa-solid fa-circle-plus" size="3x" style={{color: "#f7db12"}} />
-                </button>
+                {!readOnly && (
+                    <button style={estiloBotao} type="button" onClick={abrirModal}>
+                        <FontAwesomeIcon icon="fa-solid fa-circle-plus" size="3x" style={{color: "#f7db12"}} />
+                    </button>
+                )}
             </div>
             <div
                 style={{
@@ -289,21 +348,35 @@ function CriarCurso(){
                     flexDirection: "column" 
                 }}
             >
-                <EditorQuill
-                    value={conteudoCurso}
-                    onChange={setConteudoCurso}
-                />
-                <button 
-                    style={{
-                        border:"none",
-                        backgroundColor:"#fff",
-                        padding:"5px"
-                    }}
-                    type="button"
-                    onClick={() => salvarCurso(nomeCurso, nivelCurso, maquinasSelecionadas)}
-                >
-                    <FontAwesomeIcon icon="fa-solid fa-circle-check" size="4x" style={{color: "#0055a0ff",}} />
-                </button>
+                {!readOnly ? (
+                    <>
+                        <EditorQuill
+                            value={conteudoCurso}
+                            onChange={setConteudoCurso}
+                        />
+                        <button 
+                            style={{
+                                border:"none",
+                                backgroundColor:"#fff",
+                                padding:"5px"
+                            }}
+                            type="button"
+                            onClick={() => salvarCurso(nomeCurso, nivelCurso, maquinasSelecionadas)}
+                        >
+                            <FontAwesomeIcon icon="fa-solid fa-circle-check" size="4x" style={{color: "#0055a0ff",}} />
+                        </button>
+                    </>
+                ) : (
+                    <div>
+                        <div style={{ background: '#fff', padding: 12, borderRadius: 6 }} dangerouslySetInnerHTML={{ __html: conteudoCurso || '<p>Sem conteúdo</p>' }} />
+                        <div style={{ marginTop: 8 }}>
+                            <button
+                                onClick={() => navigate('/IniciarJornada')}
+                                style={{ padding: '8px 12px', borderRadius: 6, border: 'none', cursor: 'pointer' }}
+                            >Voltar</button>
+                        </div>
+                    </div>
+                )}
             </div>
           
         </div>
@@ -409,6 +482,7 @@ function CriarCurso(){
                                                 type="checkbox"
                                                 checked={maquinasSelecionadas.includes(maquina.id)}
                                                 onChange={() => toggleMaquinaSelecionada(maquina.id)}
+                                                disabled={readOnly}
                                                 style={{ marginRight: "10px", cursor: "pointer", width: "18px", height: "18px" }}
                                             />
                                             <div style={{ flex: 1 }}>
