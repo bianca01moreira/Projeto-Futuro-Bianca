@@ -368,7 +368,7 @@ function CriarCurso(){
                     </>
                 ) : (
                     <div>
-                        <div style={{ background: '#fff', padding: 12, borderRadius: 6 }} dangerouslySetInnerHTML={{ __html: conteudoCurso || '<p>Sem conteúdo</p>' }} />
+                        <div style={{ background: '#fff', padding: 12, borderRadius: 6, wordBreak: 'break-word', overflowWrap: 'break-word' }} dangerouslySetInnerHTML={{ __html: conteudoCurso || '<p>Sem conteúdo</p>' }} />
                         <div style={{ marginTop: 8 }}>
                             <button
                                 onClick={() => navigate('/IniciarJornada')}

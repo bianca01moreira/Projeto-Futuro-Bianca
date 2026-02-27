@@ -104,27 +104,27 @@ function IniciarJornada(){
                     </button>
                     <button
                       onClick={() => editar(curso.id)}
-                    style={{
-                        backgroundColor: '#0055A0',
-                        color: '#f7db12',
-                        padding: '8px 12px',
-                        border: 'none',
-                        borderRadius: 6,
-                        cursor: 'pointer',
-                    }}
+                      style={{
+                          backgroundColor: '#0055A0',
+                          color: '#f7db12',
+                          padding: '8px 12px',
+                          border: 'none',
+                          borderRadius: 6,
+                          cursor: 'pointer',
+                      }}
                     >
                     Editar
                     </button>
                     <button
                       onClick={() => excluirCurso(curso.id)}
-                    style={{
-                        backgroundColor: '#c42b2b',
-                        color: '#fff',
-                        padding: '8px 12px',
-                        border: 'none',
-                        borderRadius: 6,
-                        cursor: 'pointer',
-                    }}
+                      style={{
+                          backgroundColor: '#c42b2b',
+                          color: '#fff',
+                          padding: '8px 12px',
+                          border: 'none',
+                          borderRadius: 6,
+                          cursor: 'pointer',
+                      }}
                     >
                     Excluir
                     </button>
@@ -132,50 +132,8 @@ function IniciarJornada(){
             </div>
           ))
         )}
+        <button style={{padding: '8px 12px', borderRadius: 6, border: 'none', cursor: 'pointer', backgroundColor:'#0055A0', color:'white'}} onClick={() => navigate("/TelaInicio")}>Voltar</button>
       </div>
-
-      {/* Modal de visualização do curso */}
-      {selected && (
-        <div
-          style={{
-            position: 'fixed',
-            inset: 0,
-            backgroundColor: 'rgba(0,0,0,0.4)',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            zIndex: 999,
-          }}
-          onClick={() => setSelected(null)}
-        >
-          <div
-            onClick={(e) => e.stopPropagation()}
-            style={{
-              width: 800,
-              maxWidth: '95%',
-              maxHeight: '90%',
-              overflow: 'auto',
-              backgroundColor: '#fff',
-              padding: 20,
-              borderRadius: 8,
-            }}
-          >
-            <h2 style={{ marginTop: 0 }}>{selected.nomeCurso}</h2>
-            <div
-              style={{ lineHeight: 1.6 }}
-              dangerouslySetInnerHTML={{ __html: selected.conteudoCurso || '<p>Sem conteúdo</p>' }}
-            />
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, marginTop: 12 }}>
-              <button
-                onClick={() => setSelected(null)}
-                style={{ padding: '8px 12px', borderRadius: 6, border: 'none', cursor: 'pointer' }}
-              >
-                Fechar
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
