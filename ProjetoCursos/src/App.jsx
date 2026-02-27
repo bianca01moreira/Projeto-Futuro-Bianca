@@ -4,7 +4,7 @@ import './global.css'
 import SolicitarAcesso from "./Paginas/SolicitarAcesso"
 import TelaInicio from "./Paginas/telaInicio"
 import CriarCurso from "./Paginas/Administracao/CriarCurso"
-import IniciarJornada from "./Paginas/DarCurso/iniciarJornada"
+import IniciarJornada from "./Paginas/DarCurso/IniciarJornada"
 
 function App() {
   let estiloFundo = {
