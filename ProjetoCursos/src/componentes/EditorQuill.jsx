@@ -1,7 +1,11 @@
 import React from "react";
 import ReactQuill, { Quill } from "react-quill-new"; 
 import "react-quill-new/dist/quill.snow.css";
+import ImageResize from "quill-image-resize-module-react";
 import "./EditorQuill.css";
+
+window.Quill = Quill;
+Quill.register("modules/imageResize", ImageResize);
 
 function EditorQuill({ value, onChange }) {
   return (
@@ -28,6 +32,10 @@ EditorQuill.modules = {
     ["link", "image", "video"],
     ["clean"],
   ],
+  imageResize: {
+    parchment: Quill.import("parchment"),
+    modules: ["Resize", "DisplaySize", "Toolbar"], 
+  },
 };
 
 EditorQuill.formats = [
