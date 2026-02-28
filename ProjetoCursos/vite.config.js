@@ -9,7 +9,18 @@ export default defineConfig({
       '@fortawesome/fontawesome-svg-core': '@fortawesome/fontawesome-svg-core',
     },
   },
+  build: {
+    outDir: 'dist',
+    emptyOutDir: true,
+    rollupOptions: {
+      output: {
+        generatedCode: 'es2020'
+      }
+    }
+  },
+  publicDir: 'public',
   optimizeDeps: {
+    exclude: ['quill-image-resize-module-react'],
     esbuildOptions: {
       supported: {
         bigint: true,
