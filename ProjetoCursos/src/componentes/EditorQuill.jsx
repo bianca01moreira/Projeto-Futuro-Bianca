@@ -6,11 +6,12 @@ import "./EditorQuill.css";
 // Initialize ImageResize safely
 let imageResizeInitialized = false;
 
-function initializeImageResize() {
+async function initializeImageResize() {
   if (imageResizeInitialized) return;
   
   try {
-    const ImageResize = require("quill-image-resize-module-react").default;
+    const module = await import("quill-image-resize-module-react");
+    const ImageResize = module.default || module;
     window.Quill = Quill;
     Quill.register("modules/imageResize", ImageResize);
     imageResizeInitialized = true;
