@@ -3,28 +3,7 @@ import ReactQuill, { Quill } from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 import "./EditorQuill.css";
 
-// Initialize ImageResize safely
-let imageResizeInitialized = false;
-
-async function initializeImageResize() {
-  if (imageResizeInitialized) return;
-  
-  try {
-    const module = await import("quill-image-resize-module-react");
-    const ImageResize = module.default || module;
-    window.Quill = Quill;
-    Quill.register("modules/imageResize", ImageResize);
-    imageResizeInitialized = true;
-  } catch (error) {
-    console.warn("Could not load ImageResize module:", error);
-  }
-}
-
 function EditorQuill({ value, onChange }) {
-  React.useEffect(() => {
-    initializeImageResize();
-  }, []);
-
   return (
     <div className="quill-wrapper">
         <ReactQuill
@@ -49,10 +28,6 @@ EditorQuill.modules = {
     ["link", "image", "video"],
     ["clean"],
   ],
-  imageResize: {
-    parchment: Quill.import("parchment"),
-    modules: ["Resize", "DisplaySize", "Toolbar"], 
-  },
 };
 
 EditorQuill.formats = [

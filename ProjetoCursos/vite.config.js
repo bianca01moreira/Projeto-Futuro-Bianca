@@ -15,7 +15,6 @@ export default defineConfig({
   },
   publicDir: 'public',
   optimizeDeps: {
-    exclude: ['quill-image-resize-module-react'],
     esbuildOptions: {
       supported: {
         bigint: true,
