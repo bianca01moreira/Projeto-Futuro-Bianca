@@ -1,13 +1,29 @@
 import React from "react";
 import ReactQuill, { Quill } from "react-quill-new"; 
 import "react-quill-new/dist/quill.snow.css";
-import ImageResize from "quill-image-resize-module-react";
 import "./EditorQuill.css";
 
-window.Quill = Quill;
-Quill.register("modules/imageResize", ImageResize);
+// Initialize ImageResize safely
+let imageResizeInitialized = false;
+
+function initializeImageResize() {
+  if (imageResizeInitialized) return;
+  
+  try {
+    const ImageResize = require("quill-image-resize-module-react").default;
+    window.Quill = Quill;
+    Quill.register("modules/imageResize", ImageResize);
+    imageResizeInitialized = true;
+  } catch (error) {
+    console.warn("Could not load ImageResize module:", error);
+  }
+}
 
 function EditorQuill({ value, onChange }) {
+  React.useEffect(() => {
+    initializeImageResize();
+  }, []);
+
   return (
     <div className="quill-wrapper">
         <ReactQuill

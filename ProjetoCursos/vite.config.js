@@ -12,11 +12,6 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     emptyOutDir: true,
-    rollupOptions: {
-      output: {
-        generatedCode: 'es2020'
-      }
-    }
   },
   publicDir: 'public',
   optimizeDeps: {
