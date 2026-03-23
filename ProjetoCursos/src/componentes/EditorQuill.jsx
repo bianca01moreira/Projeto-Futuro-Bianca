@@ -1,14 +1,29 @@
-import React from "react";
+//import React from "react";
+import React, { useEffect } from "react";
 import ReactQuill, { Quill } from "react-quill-new"; 
 import "react-quill-new/dist/quill.snow.css";
-import ImageResize from "quill-image-resize-module-react";
+//import ImageResize from "quill-image-resize-module-react";
 import "./EditorQuill.css";
 
-window.Quill = Quill;
-Quill.register("modules/imageResize", ImageResize);
+//window.Quill = Quill;
+//Quill.register("modules/imageResize", ImageResize);
 
 function EditorQuill({ value, onChange }) {
-  return (
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      import("quill-image-resize-module-react").then((module) => {
+        const ImageResize = module.default;
+
+        if (!Quill.imports["modules/imageResize"]) {
+          Quill.register("modules/imageResize", ImageResize);
+        }
+        setReady(true);
+      });
+    }
+  }, []);
+  if (!ready) return null;
+
+  return (  
     <div className="quill-wrapper">
         <ReactQuill
           theme="snow"
@@ -32,10 +47,11 @@ EditorQuill.modules = {
     ["link", "image", "video"],
     ["clean"],
   ],
-  imageResize: {
-    parchment: Quill.import("parchment"),
-    modules: ["Resize", "DisplaySize", "Toolbar"], 
-  },
+  //imageResize: {
+    //parchment: Quill.import("parchment"),
+    //modules: ["Resize", "DisplaySize", "Toolbar"], 
+ // },
+  imageResize:{}
 };
 
 EditorQuill.formats = [

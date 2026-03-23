@@ -2,11 +2,12 @@ import Menu from "../../Menu.jsx"
 import { useState, useEffect } from "react"
 import { useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
 import "./CriarCurso.css";
 import './Modal.css';
 
 //para usar o react-quill-new
-import EditorQuill from "../../componentes/EditorQuill";
+//import EditorQuill from "../../componentes/EditorQuill";
 
 function CriarCurso(){
     // hooks
@@ -350,9 +351,13 @@ function CriarCurso(){
             >
                 {!readOnly ? (
                     <>
-                        <EditorQuill
+                        {/* <EditorQuill
                             value={conteudoCurso}
                             onChange={setConteudoCurso}
+                        /> */}
+                        <SimpleEditor
+                             value={conteudoCurso}
+                            onChange = {setConteudoCurso}
                         />
                         <button 
                             style={{

@@ -2,6 +2,7 @@ import { useState } from "react";
 import imagemLogin from './assets/imagens/imagemLogin.png';
 import {Routes, Route, Link, useNavigate} from 'react-router-dom'
 
+
 let estilo = {
     minHeight:"100vh",
     display: "flex",
@@ -19,7 +20,7 @@ let estiloLogin = {
     gap:"20px",
     backgroundColor: "#0055A0",
     width:"300px",
-    height:"300px",
+    height:"320px",
     color:"#FCFEFF",
     border: "none",
     borderRadius:"10px"
@@ -30,14 +31,14 @@ let estiloInput = {
     borderRadius: "5px",
     height:"25px",
     width:"90%",
-    padding:"5px",
+    padding:"15px",
 }
 let estiloButton = {
     border: "none",
     borderRadius: "5px",
     backgroundColor:"#F7DB12",
     padding: "10px",
-    width: "280px"
+    width: "220px"
 }
 let estiloLink = {
     color:"#F7DB12",
