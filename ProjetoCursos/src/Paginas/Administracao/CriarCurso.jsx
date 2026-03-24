@@ -29,7 +29,6 @@ function CriarCurso(){
     const [linhaEquipamento, setLinhaEquipamento] = useState("")
     const[idMaquina, setIdMaquina] = useState(1) //Quando o backend for criado isso será desnecessário
     const[maquinaEmEdicao, setMaquinaEmEdicao] = useState(null)
-    const[maquinaEmCadastro, setMaquinaEmCadastro] = useState (null)
     const [maquinasSelecionadas, setMaquinasSelecionadas] = useState([])
     const [abaMaquina, setAbaMaquina] = useState("listar") //"listar" ou "cadastrar"
 
@@ -217,15 +216,6 @@ function CriarCurso(){
         cursor: "pointer"
     }
 
-    let estiloInput = {
-        border: "none",
-        borderBottom:"2px solid #f7db12",
-        backgroundColor:"#0055A0",
-        color:"#FCFEFF",
-        padding:"5px",
-        fontSize: "20px",
-    }
-
     let estiloSelect = {
         padding: "5px",
         color:"#f7db12",
@@ -351,12 +341,8 @@ function CriarCurso(){
             >
                 {!readOnly ? (
                     <>
-                        {/* <EditorQuill
-                            value={conteudoCurso}
-                            onChange={setConteudoCurso}
-                        /> */}
                         <SimpleEditor
-                             value={conteudoCurso}
+                            value={conteudoCurso}
                             onChange = {setConteudoCurso}
                         />
                         <button 
@@ -383,8 +369,8 @@ function CriarCurso(){
                     </div>
                 )}
             </div>
-          
         </div>
+         
         {modalIsOpen && (
             <div className="modal-backdrop">
                 <div className="modal-content">
