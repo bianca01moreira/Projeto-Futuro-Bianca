@@ -4,6 +4,12 @@ import logo from '../../assets/imagens/logo.png';
 import Menu from '../../Menu.jsx';
 
 function IniciarJornada(){
+
+    let estiloIniciarJornada = {
+        color: "black",
+
+    }
+
     const [cursos, setCursos] = useState([]);
     const [selected, setSelected] = useState (null);
     const [loading, setLoading] = useState(true);
@@ -15,10 +21,10 @@ function IniciarJornada(){
         setCursos(dados);
         setLoading(false);
     }, []);
-    function refreshFromStorage(){
-        const dados = JSON.parse(localStorage.getItem('cursos') || '[]');
-        setCursos(dados);
-    }
+    // function refreshFromStorage(){
+    //     const dados = JSON.parse(localStorage.getItem('cursos') || '[]');
+    //     setCursos(dados);
+    // }
     function inciarCurso(curso){
          // abrir a tela de visualização (mesma rota de CriarCurso, em modo readOnly)
          navigate('/CriarCurso', { state: { cursoId: curso.id, readOnly: true } });
@@ -41,7 +47,7 @@ function IniciarJornada(){
         return <div>Carregando...</div>;
 
     return (
-    <div>
+    <div style={estiloIniciarJornada}>
         <div>
             <Menu></Menu>
         </div>
