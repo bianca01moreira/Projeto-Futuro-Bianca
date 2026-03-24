@@ -2,12 +2,28 @@
   --tt-input-placeholder: var(--tt-gray-light-a-400);
   --tt-input-border: var(--tt-gray-light-a-200);
   --tt-input-border-focus: var(--tt-gray-light-a-300);
+
+  --tt-bg-color: #ffffff;
+  --tt-theme-text: #1a1a1a; 
 }
 
 .dark {
   --tt-input-placeholder: var(--tt-gray-dark-a-400);
   --tt-input-border: var(--tt-gray-dark-a-200);
   --tt-input-border-focus: var(--tt-gray-dark-a-300);
+
+  --tt-bg-color: #000000;
+  --tt-theme-text: #ffffff;
+}
+
+html, 
+body, 
+.simple-editor-wrapper, 
+.simple-editor-content,
+.tiptap.ProseMirror {
+  background-color: var(--tt-bg-color) !important;
+  color: var(--tt-theme-text);
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .tiptap-input {
