@@ -204,6 +204,11 @@ export function SimpleEditor() {
       }),
     ],
     content: "",
+    onUpdate: ({ editor }) => {
+      const html = editor.getHTML();
+      const json = editor.getJSON();
+      console.log(html);
+    }
   })
 
   const rect = useCursorVisibility({
