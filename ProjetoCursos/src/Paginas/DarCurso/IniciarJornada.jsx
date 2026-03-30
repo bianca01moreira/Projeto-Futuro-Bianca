@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
-import logo from '../../assets/imagens/logo.png';
 import Menu from '../../Menu.jsx';
 
 function IniciarJornada(){
@@ -21,10 +20,6 @@ function IniciarJornada(){
         setCursos(dados);
         setLoading(false);
     }, []);
-    // function refreshFromStorage(){
-    //     const dados = JSON.parse(localStorage.getItem('cursos') || '[]');
-    //     setCursos(dados);
-    // }
     function inciarCurso(curso){
          // abrir a tela de visualização (mesma rota de CriarCurso, em modo readOnly)
          navigate('/CriarCurso', { state: { cursoId: curso.id, readOnly: true } });
@@ -89,22 +84,22 @@ function IniciarJornada(){
                     {Array.isArray(curso.modulos) ? curso.modulos.length : 0}
                     </p>
                     <p style={{ margin: '6px 0' }}>
-                    <strong>Criado em:</strong> {curso.dataCriacao} • <strong>Disponível:</strong>{' '}
+                    <strong>Última atualização:</strong> {curso.dataCriacao} • <strong>Disponível:</strong>{' '}
                     {curso.disponivel ? 'Sim' : 'Não'}
                     </p>
                 </div>
 
                 <div style={{ display: 'flex', gap: 8 }}>
-                    <button
-                      onClick={() => inciarCurso(curso)}
-                    style={{
-                        backgroundColor: '#0b7a4d',
-                        color: '#fff',
-                        padding: '8px 12px',
-                        border: 'none',
-                        borderRadius: 6,
-                        cursor: 'pointer',
-                    }}
+                    <button 
+                        onClick={() => inciarCurso(curso)}
+                        style={{
+                            backgroundColor: '#0b7a4d',
+                            color: '#fff',
+                            padding: '8px 12px',
+                            border: 'none',
+                            borderRadius: 6,
+                            cursor: 'pointer',
+                        }}
                     >
                     Iniciar
                     </button>

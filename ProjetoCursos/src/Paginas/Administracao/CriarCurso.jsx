@@ -6,9 +6,6 @@ import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor
 import "./CriarCurso.css";
 import './Modal.css';
 
-//para usar o react-quill-new
-//import EditorQuill from "../../componentes/EditorQuill";
-
 function CriarCurso(){
     // hooks
     const [nomeCurso, setNomeCurso] = useState("")
@@ -229,7 +226,7 @@ function CriarCurso(){
         <Menu>
             <span>
                 <input
-                    className="inputCurso" 
+                    className="inputCurso"  
                     style={{
                         border: "none",
                         borderBottom:"2px solid #f7db12",
@@ -270,14 +267,14 @@ function CriarCurso(){
                     disabled={readOnly}
                 >
                     <option value="">Selecione o nível do curso</option>
-                    <option value="basico">Básico</option>
-                    <option value="intermediario">Intermediário</option>
-                    <option value="avancado">Avançado</option>
+                    <option value="Básico">Básico</option>
+                    <option value="Intermediário">Intermediário</option>
+                    <option value="Avançado">Avançado</option>
                 </select>
             </span>
 
             {!readOnly && (
-                <button style={estiloBotao} onClick={abrirModalMaquina}>
+                <button title="Selecionar máquinas" style={estiloBotao} onClick={abrirModalMaquina}>
                     <FontAwesomeIcon icon="fa-solid fa-truck-monster" size="2xl" style={{color: "#f7db12"}}/>
                 </button>
             )}
@@ -310,12 +307,14 @@ function CriarCurso(){
                                 <>
                                     <button style={{background:"none", border:"none", cursor:"pointer"}}
                                         onClick={() => editarModulo(modulo)}
+                                        title="Editar módulo"
                                     >
                                         <FontAwesomeIcon icon="fa-solid fa-pencil" style={{color: "#f7db12",}} />
                                     </button>
                                     <button
                                         onClick={()=> deletarModulo(modulo.id)}
                                         style={{background:"none", border:"none", cursor:"pointer"}}
+                                        title="Excluir módulo"
                                     >
                                         <FontAwesomeIcon icon="fa-solid fa-trash" style={{color: "#f7db12",}} />
                                     </button>
@@ -325,7 +324,7 @@ function CriarCurso(){
                     </div>
                 ))}
                 {!readOnly && (
-                    <button style={estiloBotao} type="button" onClick={abrirModal}>
+                    <button title="Adicionar módulo" style={estiloBotao} type="button" onClick={abrirModal}>
                         <FontAwesomeIcon icon="fa-solid fa-circle-plus" size="3x" style={{color: "#f7db12"}} />
                     </button>
                 )}
@@ -345,7 +344,8 @@ function CriarCurso(){
                             value={conteudoCurso}
                             onChange = {setConteudoCurso}
                         />
-                        <button 
+                        <button
+                            title="Salvar curso"
                             style={{
                                 border:"none",
                                 backgroundColor:"#fff",
