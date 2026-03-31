@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
+
 import imagemLogin from '../assets/imagens/imagemLogin.png';
 
 
@@ -48,11 +50,17 @@ function SolicitarAcesso(){
     const [empresa, setEmpresa] = useState("");
     const [mensagem, setMensagem] = useState("");
 
+    const navigate = useNavigate();
+
+
     function Enviar  () {
         if(nome === "" || email === "" || cargo === "" || cpf === "" || empresa === ""){
             setMensagem ("Você deve preencher todos os dados!")
         }
         else{
+            const novoId = Date.now(); 
+            const dados = {id:novoId, nome:nome, email:email, cpf:cpf, cargo:cargo, empresa:empresa}
+            navigate('/Solicitacoes', {state: dados})
             setMensagem (nome +" sua solicitação foi enviada!")
             setNome("");
             setEmail("");
@@ -61,6 +69,7 @@ function SolicitarAcesso(){
             setEmpresa("");
         }
     }
+
     return (
         <div style={estiloFundo}>
             <form style={estilo}>

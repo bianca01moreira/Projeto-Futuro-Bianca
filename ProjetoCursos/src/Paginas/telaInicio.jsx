@@ -10,11 +10,11 @@ let estilo = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#0055A0",
+    backgroundColor: "#a5b1bc",
 }
 let estiloBotao = {
     border: "none",
-    backgroundColor: "#0055A0",
+    backgroundColor: "transparent",
 }
 let estiloAlinhamento = {
     display: "flex",
