@@ -41,11 +41,9 @@ export const textAlignLabels = {
  */
 export function canSetTextAlign(editor, align) {
   if (!editor || !editor.isEditable) return false
-  if (
-    !isExtensionAvailable(editor, "textAlign") ||
-    isNodeTypeSelected(editor, ["image", "horizontalRule"])
-  )
-    return false
+  if (!isExtensionAvailable(editor, "textAlign")) return false
+  if (isNodeTypeSelected(editor, ["horizontalRule"])) return false
+  if (isNodeTypeSelected(editor, ["video", "image"])) return true
 
   return editor.can().setTextAlign(align);
 }
@@ -59,6 +57,9 @@ export function hasSetTextAlign(commands) {
  */
 export function isTextAlignActive(editor, align) {
   if (!editor || !editor.isEditable) return false
+  if (isNodeTypeSelected(editor, ["video", "image"])) {
+    return editor.isActive("video", { textAlign: align }) || editor.isActive("image", { textAlign: align });
+  }
   return editor.isActive({ textAlign: align });
 }
 
@@ -68,6 +69,13 @@ export function isTextAlignActive(editor, align) {
 export function setTextAlign(editor, align) {
   if (!editor || !editor.isEditable) return false
   if (!canSetTextAlign(editor, align)) return false
+
+  if (isNodeTypeSelected(editor, ["video"])) {
+    return editor.chain().focus().updateAttributes("video", { textAlign: align }).run();
+  }
+  if (isNodeTypeSelected(editor, ["image"])) {
+    return editor.chain().focus().updateAttributes("image", { textAlign: align }).run();
+  }
 
   const chain = editor.chain().focus()
   if (hasSetTextAlign(chain)) {
