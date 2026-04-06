@@ -16,6 +16,9 @@ import { Subscript } from "@tiptap/extension-subscript"
 import { Superscript } from "@tiptap/extension-superscript"
 import { Placeholder, Selection } from "@tiptap/extensions"
 
+// --- Custom Extensions ---
+import { CustomVideo } from "@/extensions/Video"
+
 // --- UI Primitives ---
 import { Button } from "@/components/tiptap-ui-primitive/button"
 import { Spacer } from "@/components/tiptap-ui-primitive/spacer"
@@ -27,18 +30,21 @@ import {
 
 // --- Tiptap Node ---
 import { ImageUploadNode } from "@/components/tiptap-node/image-upload-node/image-upload-node-extension"
+import { VideoUploadNode } from "@/components/tiptap-node/video-upload-node/video-upload-node-extension"
 import { HorizontalRule } from "@/components/tiptap-node/horizontal-rule-node/horizontal-rule-node-extension"
 import "@/components/tiptap-node/blockquote-node/blockquote-node.scss"
 import "@/components/tiptap-node/code-block-node/code-block-node.scss"
 import "@/components/tiptap-node/horizontal-rule-node/horizontal-rule-node.scss"
 import "@/components/tiptap-node/list-node/list-node.scss"
 import "@/components/tiptap-node/image-node/image-node.scss"
+import "@/components/tiptap-node/video-upload-node/video-upload-node.scss"
 import "@/components/tiptap-node/heading-node/heading-node.scss"
 import "@/components/tiptap-node/paragraph-node/paragraph-node.scss"
 
 // --- Tiptap UI ---
 import { HeadingDropdownMenu } from "@/components/tiptap-ui/heading-dropdown-menu"
 import { ImageUploadButton } from "@/components/tiptap-ui/image-upload-button"
+import { VideoUploadButton } from "@/components/tiptap-ui/video-upload-button"
 import { ListDropdownMenu } from "@/components/tiptap-ui/list-dropdown-menu"
 import { BlockquoteButton } from "@/components/tiptap-ui/blockquote-button"
 import { CodeBlockButton } from "@/components/tiptap-ui/code-block-button"
@@ -70,7 +76,7 @@ import { useCursorVisibility } from "@/hooks/use-cursor-visibility"
 import { ThemeToggle } from "@/components/tiptap-templates/simple/theme-toggle"
 
 // --- Lib ---
-import { handleImageUpload, MAX_FILE_SIZE } from "@/lib/tiptap-utils"
+import { handleImageUpload, handleVideoUpload, MAX_FILE_SIZE } from "@/lib/tiptap-utils"
 
 // --- Styles ---
 import "@/components/tiptap-templates/simple/simple-editor.scss"
@@ -124,6 +130,7 @@ const MainToolbarContent = ({
       <ToolbarSeparator />
       <ToolbarGroup>
         <ImageUploadButton text="Add" />
+        <VideoUploadButton text="Add Video" />
       </ToolbarGroup>
       <Spacer />
       {isMobile && <ToolbarSeparator />}
@@ -201,6 +208,14 @@ export function SimpleEditor({ value, onChange }) {
         limit: 3,
         upload: handleImageUpload,
         onError: (error) => console.error("Upload failed:", error),
+      }),
+      CustomVideo,
+      VideoUploadNode.configure({
+        accept: "video/*",
+        maxSize: 100 * 1024 * 1024,
+        limit: 1,
+        upload: handleVideoUpload,
+        onError: (error) => console.error("Video upload failed:", error),
       }),
     ],
     content: value || "",

@@ -1,0 +1,169 @@
+"use client";
+import { useCallback, useEffect, useState } from "react"
+import { useHotkeys } from "react-hotkeys-hook"
+
+// --- Hooks ---
+import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
+import { useIsBreakpoint } from "@/hooks/use-is-breakpoint"
+
+// --- Lib ---
+import { isExtensionAvailable } from "@/lib/tiptap-utils"
+
+// --- Icons ---
+import { VideoPlusIcon } from "@/components/tiptap-icons/video-plus-icon"
+
+export const VIDEO_UPLOAD_SHORTCUT_KEY = "mod+shift+v"
+
+/**
+ * Checks if video can be inserted in the current editor state
+ */
+export function canInsertVideo(editor) {
+  if (!editor || !editor.isEditable) return false
+  if (!isExtensionAvailable(editor, "videoUpload")) return false
+
+  return editor.can().insertContent({ type: "videoUpload" });
+}
+
+/**
+ * Checks if video is currently active
+ */
+export function isVideoActive(editor) {
+  if (!editor || !editor.isEditable) return false
+  return editor.isActive("videoUpload");
+}
+
+/**
+ * Inserts a video in the editor
+ */
+export function insertVideo(editor) {
+  if (!editor || !editor.isEditable) return false
+  if (!canInsertVideo(editor)) return false
+
+  try {
+    return editor
+      .chain()
+      .focus()
+      .insertContent({
+        type: "videoUpload",
+      })
+      .run();
+  } catch {
+    return false
+  }
+}
+
+/**
+ * Determines if the video button should be shown
+ */
+export function shouldShowButton(props) {
+  const { editor, hideWhenUnavailable } = props
+
+  if (!editor || !editor.isEditable) return false
+
+  if (!hideWhenUnavailable) {
+    return true
+  }
+
+  if (!isExtensionAvailable(editor, "videoUpload")) return false
+
+  if (!editor.isActive("code")) {
+    return canInsertVideo(editor);
+  }
+
+  return true
+}
+
+/**
+ * Custom hook that provides video functionality for Tiptap editor
+ *
+ * @example
+ * ```tsx
+ * // Simple usage - no params needed
+ * function MySimpleVideoButton() {
+ *   const { isVisible, handleVideo } = useVideoUpload()
+ *
+ *   if (!isVisible) return null
+ *
+ *   return <button onClick={handleVideo}>Add Video</button>
+ * }
+ *
+ * // Advanced usage with configuration
+ * function MyAdvancedVideoButton() {
+ *   const { isVisible, handleVideo, label, isActive } = useVideoUpload({
+ *     editor: myEditor,
+ *     hideWhenUnavailable: true,
+ *     onInserted: () => console.log('Video inserted!')
+ *   })
+ *
+ *   if (!isVisible) return null
+ *
+ *   return (
+ *     <MyButton
+ *       onClick={handleVideo}
+ *       aria-pressed={isActive}
+ *       aria-label={label}
+ *     >
+ *       Add Video
+ *     </MyButton>
+ *   )
+ * }
+ * ```
+ */
+export function useVideoUpload(config) {
+  const {
+    editor: providedEditor,
+    hideWhenUnavailable = false,
+    onInserted,
+  } = config || {}
+
+  const { editor } = useTiptapEditor(providedEditor)
+  const isMobile = useIsBreakpoint()
+  const [isVisible, setIsVisible] = useState(true)
+  const canInsert = canInsertVideo(editor)
+  const isActive = isVideoActive(editor)
+
+  useEffect(() => {
+    if (!editor) return
+
+    const handleSelectionUpdate = () => {
+      setIsVisible(shouldShowButton({ editor, hideWhenUnavailable }))
+    }
+
+    handleSelectionUpdate()
+
+    editor.on("selectionUpdate", handleSelectionUpdate)
+
+    return () => {
+      editor.off("selectionUpdate", handleSelectionUpdate)
+    };
+  }, [editor, hideWhenUnavailable])
+
+  const handleVideo = useCallback(() => {
+    if (!editor) return false
+
+    const success = insertVideo(editor)
+    if (success) {
+      onInserted?.()
+    }
+    return success
+  }, [editor, onInserted])
+
+  useHotkeys(VIDEO_UPLOAD_SHORTCUT_KEY, (event) => {
+    event.preventDefault()
+    handleVideo()
+  }, {
+    enabled: isVisible && canInsert,
+    enableOnContentEditable: !isMobile,
+    enableOnFormTags: true,
+  })
+
+  return {
+    isVisible,
+    isActive,
+    handleVideo,
+    canInsert,
+    label: "Add video",
+    shortcutKeys: VIDEO_UPLOAD_SHORTCUT_KEY,
+    Icon: VideoPlusIcon,
+  }
+}
