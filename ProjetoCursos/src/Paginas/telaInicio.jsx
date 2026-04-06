@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import iniciarCurso from '../assets/imagens/iniciarCurso.png';
 import criarCurso from '../assets/imagens/criarCurso.png';
 import Menu from '@/Menu.jsx';
-
+    
 let estilo = {
     minHeight: "calc(100vh - 150px)",
     display: "flex",

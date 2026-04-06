@@ -1,12 +1,25 @@
 import React, {useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Menu from '../../Menu.jsx';
 
+let estiloPesquisar ={
+    padding:"10px",
+    backgroundColor:'#fff',
+    border:"none",
+    borderRadius:"15px",
+    width:"30%"
+}
+let estiloInputPesquisar ={
+    border:"none",
+    padding:"5px",
+    width:"90%",
+    outline: "none"
+}
 function IniciarJornada(){
 
     let estiloIniciarJornada = {
         color: "black",
-
     }
 
     const [cursos, setCursos] = useState([]);
@@ -44,7 +57,17 @@ function IniciarJornada(){
     return (
     <div style={estiloIniciarJornada}>
         <div>
-            <Menu></Menu>
+            <Menu>
+                <div style={estiloPesquisar}>
+                <label><FontAwesomeIcon icon="fa-solid fa-magnifying-glass" style={{color: "rgb(247, 219, 18)",}} />
+                    <input 
+                        style={estiloInputPesquisar}
+                        type='text'
+                        placeholder='Procurar curso'
+                    />
+                </label>  
+                </div>
+            </Menu>
         </div>
         <div style={{ padding: 20 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
