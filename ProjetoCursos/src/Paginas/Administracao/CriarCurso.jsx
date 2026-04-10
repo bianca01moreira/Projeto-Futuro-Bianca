@@ -16,6 +16,7 @@ function CriarCurso(){
     const [modalIsOpen, setModalIsOpen] = useState(false)
     const [moduloCurso, setModuloCurso] = useState("")
     const [descricao, setDescricao] = useState("")
+    const [mostrarDescricao, setMostrarDescricao] = useState(false)
     const [moduloEmEdicao, setModuloEmEdicao] = useState(null)
     const[idModulo, setIdModulo] = useState(1)  //Quando o backend for criado isso será desnecessário
 
@@ -56,6 +57,10 @@ function CriarCurso(){
     }, [editandoId]);
 
 
+    const formatarDescricao = (texto) => {
+        if(!texto) return ""
+        return texto.length > 20 ? texto.slice(0,20) + "..." : texto
+    }
     //função para salvar os módulos do curso
     function salvar() {
         if (!moduloCurso || !descricao) {
@@ -300,7 +305,23 @@ function CriarCurso(){
                     >
                         <div style={{flex:1}}>
                             <strong>{modulo.nome}</strong>
-                            <p style={{ fontSize: "12px", margin:"5px 0"}}>{modulo.descricao}</p>
+                            <p style={{ fontSize: "12px", margin:"5px 0"}}>
+                                {mostrarDescricao ? modulo.descricao : formatarDescricao(modulo.descricao)}
+                            </p>
+                            <button
+                                type="button"
+                                onClick={() => setMostrarDescricao(prev => !prev)}
+                                style={{
+                                    background: "none",
+                                    border: "none",
+                                    color: "#f7db12",
+                                    cursor: "pointer",
+                                    padding: 0,
+                                    fontSize: "12px"
+                                }}
+                            >
+                                {mostrarDescricao ? "Ocultar" : "Mostrar mais"}
+                            </button>
                         </div>
                         <div style={{display:"flex", gap:"5px"}}>
                             {!readOnly && (
