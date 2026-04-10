@@ -59,7 +59,10 @@ function IniciarJornada(){
         <div>
             <Menu>
                 <div style={estiloPesquisar}>
-                <label><FontAwesomeIcon icon="fa-solid fa-magnifying-glass" style={{color: "rgb(247, 219, 18)",}} />
+                <label>
+                    <button type='button' name='botaoPesquisa' style={{border:'none', backgroundColor: 'transparent'}}>
+                        <FontAwesomeIcon icon="fa-solid fa-magnifying-glass" style={{color: "rgb(247, 219, 18)",}} />
+                    </button>
                     <input 
                         style={estiloInputPesquisar}
                         type='text'
