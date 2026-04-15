@@ -1,0 +1,21 @@
+import sqlite3
+
+def conectar():
+    return sqlite3.connect("database.db")
+
+
+def criar_tabelas():
+    with conectar() as conn:
+        cursor = conn.cursor()
+
+        cursor.execute("""
+        CREATE TABLE IF NOT EXISTS solicitacoes (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome TEXT,
+            email TEXT UNIQUE,
+            cpf TEXT UNIQUE,
+            cargo TEXT,
+            empresa TEXT,
+            status TEXT DEFAULT 'pendente'
+        )
+        """)
