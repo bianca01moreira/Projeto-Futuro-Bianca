@@ -1,0 +1,26 @@
+def validar_email(email):
+    email = email.strip()
+
+    if "@" not in email or "." not in email:
+        return False
+
+    if email.startswith("@") or email.endswith("@"):
+        return False
+
+    return True
+
+
+def validar_cpf(cpf):
+    cpf = ''.join(filter(str.isdigit, cpf))
+
+    if len(cpf) != 11 or cpf == cpf[0] * 11:
+        return False
+
+    for j in [9, 10]:
+        soma = sum(int(cpf[i]) * (j + 1 - i) for i in range(j))
+        digito = (soma * 10 % 11) % 10
+
+        if int(cpf[j]) != digito:
+            return False
+
+    return True
