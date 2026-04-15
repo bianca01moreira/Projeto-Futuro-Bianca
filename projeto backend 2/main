@@ -1,0 +1,33 @@
+from banco import criar_tabelas
+from solicitacoes import solicitar_acesso, listar_solicitacoes
+
+
+def menu():
+    while True:
+        print("""
+   SISTEMA DE ACESSO
+
+1 - Solicitar acesso
+2 - Ver /SOLICITACOES
+0 - Sair
+""")
+
+        opcao = input("Escolha: ").strip()
+
+        if opcao == "1":
+            solicitar_acesso()
+
+        elif opcao == "2":
+            listar_solicitacoes()
+
+        elif opcao == "0":
+            print("Encerrando...")
+            break
+
+        else:
+            print("Opção inválida")
+
+
+if __name__ == "__main__":
+    criar_tabelas()
+    menu()
