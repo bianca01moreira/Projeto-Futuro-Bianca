@@ -2,7 +2,7 @@ import json
 import os
 
 DB_FILE = "usuarios.json"
-
+#DB_FILE pode ser reemplazado por o arquivo base que ja temos
 def all_usuarios():
     if not os.path.exists(DB_FILE):
         return {"admin": "1234"}
@@ -47,7 +47,6 @@ def sistema():
                     print("Este usuario ja está cadastrado.")
                 else:
                     nova_pass = input("Crie su senha: ")
-                    # Insertar en el diccionario y guardar en disco
                     usuarios_db[novo_user] = nova_pass
                     guardar_usuarios(usuarios_db)
                     print(f" Usuario '{novo_user}' criado e incluido no sistema.")
@@ -56,7 +55,6 @@ def sistema():
                 break
 
         else:
-            # --- ZONA DENTRO DEL SISTEMA (LOGGED IN) ---
             print(f"\n--- PANEL DE CONTROL ({usuario_atual}) ---")
             print("1. Meus dados")
             print("2. Logout (Fechar sessao)")
